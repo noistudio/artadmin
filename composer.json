@@ -1,7 +1,7 @@
 {
     "name": "noistudio/artadmin",
     "description": "Админ панель для laravel",
-    "license": "MIT",
+    "license": "GPL-3.0-only",
     "authors": [
         {
             "name": "Artem Tatarinov",
