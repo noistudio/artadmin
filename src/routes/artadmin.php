@@ -5,6 +5,7 @@ $prefix=config("artadmin.url_prefix");
 Route::prefix($prefix)->middleware(["web"])->group(function () {
     Route::middleware(['artadmin.check_login' ])->group( function () {
         Route::get("/index",[\Artadmin\Controllers\DashboardController::class,"index"])->name("artadmin.index");
+        Route::get("/file_frame",[\Artadmin\Controllers\FilemanagerController::class,"index"])->name("artadmin.filemanager");
         Route::get("/logout",[\Artadmin\Controllers\DashboardController::class,"logout"])->name("artadmin.logout");
         Route::get("/password",[\Artadmin\Controllers\MyController::class,"index"])->name("artadmin.password");
         Route::post("/change_password",[\Artadmin\Controllers\MyController::class,"change"])->name("artadmin.change_password");

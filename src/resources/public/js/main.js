@@ -679,7 +679,7 @@
             var checked_row_arr = this_table.find('.form-check-number:checked');
 
             $.each(checked_row_arr,function(){
-                $(this).closest('tr').find('.status input').prop('checked',true).change();
+                $(this).closest('tr').find('.status input').prop('checked',true);
             });
 
 
@@ -696,7 +696,7 @@
             var checked_row_arr = this_table.find('.form-check-number:checked');
 
             $.each(checked_row_arr,function(){
-                $(this).closest('tr').find('.status input').prop('checked',false).change();
+                $(this).closest('tr').find('.status input').prop('checked',false);
             });
 
 

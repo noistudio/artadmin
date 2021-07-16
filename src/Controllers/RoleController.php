@@ -13,9 +13,21 @@ class RoleController extends Controller
 
     function index(){
 
+        $request_vars=request()->all();
         $data=array();
-        $data['rows']=Role::query()->where("slug","!=","admin")->get();
+        $data['rows']=Role::query()->where(
+            function($query) use ($request_vars){
+                $query->where("slug","!=","admin");
+
+                if(isset($request_vars['permission']) and is_numeric($request_vars['permission']) and (int)$request_vars['permission']>0) {
+                    $query->whereHas("permissions", function ($query) use ($request_vars) {
+                        $query->where("id", (int)$request_vars['permission']);
+                    });
+                }
+            }
+        )->get();
         $data['permissions']=Permission::query()->get();
+        $data['request_all']=$request_vars;
 
         return view("artadmin::roles.list",$data);
     }

@@ -17,13 +17,37 @@ class AdminsController extends Controller
 
     public function index(){
         $user=artadmin_user();
-        $admins=User::query()->where("id","!=",$user->id)->get();
+        $request_vars=request()->all();
+
+        $admins=User::query()->with(["roles","permissions"])->where(function($query) use ($user,$request_vars){
+            $query->where("id","!=",$user->id);
+
+            if(isset($request_vars['role']) and is_numeric($request_vars['role']) and (int)$request_vars['role']>0){
+            $query->whereHas("roles",function($query) use ($request_vars){
+
+               $query->where("id",$request_vars['role']);
+            });
+            }
+            if(isset($request_vars['permission']) and is_numeric($request_vars['permission']) and (int)$request_vars['permission']>0) {
+                $query->where(function ($query) use ($request_vars) {
+
+                    $query->orWhereHas("roles.permissions", function ($query) use ($request_vars) {
+                        $query->where("id", (int)$request_vars['permission']);
+                    });
+                    $query->orWhereHas("permissions", function ($subquery) use ($request_vars) {
+                        $subquery->where("id", (int)$request_vars['permission']);
+                    });
+                });
+            }
+
+        })->get();
 
 
         $data=array();
         $data['rows']=$admins;
         $data['roles']=Role::query()->get();
         $data['permissions']=Permission::query()->get();
+        $data['request_all']=$request_vars;
 
 
         return view("artadmin::admins.list",$data);
