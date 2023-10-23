@@ -22,7 +22,7 @@ class PermissionController extends Controller
         $request=request();
         $validated=$request->validate([
             'name' => 'required|unique:\Artadmin\Models\Permission,name|max:255',
-            'slug' => 'required|regex:/(^([a-zA-Z_]+)(\d+)?$)/u|unique:\Artadmin\Models\Permission,slug|max:30',]);
+            'slug' => 'required|regex:/(^([a-zA-Z_.]+)(\d+)?$)/u|unique:\Artadmin\Models\Permission,slug|max:30',]);
 
 
         $permission=new Permission();
